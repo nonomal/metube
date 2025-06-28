@@ -6,7 +6,7 @@ RUN npm ci && \
     node_modules/.bin/ng build --configuration production
 
 
-FROM python:3.11-alpine
+FROM python:3.13-alpine
 
 WORKDIR /app
 
@@ -37,4 +37,9 @@ ENV STATE_DIR /downloads/.metube
 ENV TEMP_DIR /downloads
 VOLUME /downloads
 EXPOSE 8081
+
+# Add build-time argument for version
+ARG VERSION=dev
+ENV METUBE_VERSION=$VERSION
+
 ENTRYPOINT ["/sbin/tini", "-g", "--", "./docker-entrypoint.sh"]
